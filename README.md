@@ -1,25 +1,19 @@
 #BWU Datastore Launcher
 
-Simplify starting and stopping local Google Cloud Datastore server(s) from unit 
-tests.
-
-Currently only the Local Development Server (gcd) is supported.
+Simplify starting and stopping local Google Cloud Datastore Local Development 
+Server(s) or AppEngine API Server(s) from unit tests.
 
 See also: 
 
 - https://cloud.google.com/datastore/docs/tools/devserver  
 - https://cloud.google.com/datastore/docs/tools/
+- https://cloud.google.com/sdk/gcloud/  
   
-I might eventually add support for launching the `api_server.sh` 
-from the gcloud tools to support running Datastore tests without 
-`gcloud preview app run` and Docker (I haven't figured out what actually are 
-the differences and if it's worth the effort)
-
 ## Usage
 
-```Dart
-library bwu_datastore_launcher.test.launch_datastore_local_dev_server;
+### Google Cloud Datastore Local Development Server example
 
+```Dart
 import 'dart:io' as io;
 import 'dart:async' show Future;
 import 'package:path/path.dart' as path;
@@ -28,7 +22,7 @@ import 'package:unittest/vm_config.dart';
 import 'package:bwu_datastore_launcher/bwu_datastore_launcher.dart';
 
 main() async {
-  //useVMConfiguration();
+  useVMConfiguration();
 
   group('launch local dev server', () {
 
@@ -38,7 +32,7 @@ main() async {
       // Create an instance of the server launcher.
       final server = new DatastoreLocalDevServer('connect',
           workingDirectory: path.join(
-              packageRoot().absolute.path, 'test/tmp_data'),
+              packageRoot().absolute.path, 'test/tmp_data/datastore_local_dev_server'),
           // `gcd` uses the `JAVA` environment variable to find the Java
           // executable. We make it to point to Java 7 because `gcd` has issues
           // with Java 8.
@@ -62,7 +56,7 @@ main() async {
               exitCalled();
             });
 
-            return new Future.delayed(new Duration(seconds: 1),
+            return new Future.delayed(new Duration(seconds: 2),
                 // () => server.kill(io.ProcessSignal.SIGTERM))
                 // Darts Process kill doesn't kill child processes, therefore we
                 // use the `remoteShutdown` feature of the server to not keep
@@ -75,21 +69,43 @@ main() async {
     });
   });
 }
+```
 
-/// Traverse upwards until `pubspec.yaml` is found and return the directory path.
-/// We use paths relative to the package root, therefore we need to know where
-/// the package root actually is.
-/// This way the tests work when launched from IDE and for example from
-/// test_runner.
-io.Directory packageRoot([io.Directory startDir]) {
-  if (startDir == null) {
-    startDir = io.Directory.current;
-  }
-  final exists = new io.File(path.join(startDir.absolute.path, 'pubspec.yaml'))
-      .existsSync();
+### AppEngine API Server example
 
-  if (exists) return startDir;
-  if (startDir.parent == startDir) return null;
-  return packageRoot(startDir.parent);
+```Dart
+import 'dart:io' as io;
+import 'dart:async' show Future;
+import 'package:path/path.dart' as path;
+import 'package:unittest/unittest.dart';
+import 'package:unittest/vm_config.dart';
+import 'package:bwu_datastore_launcher/bwu_datastore_launcher.dart';
+
+main() async {
+  useVMConfiguration();
+
+  group('launch local dev server', () {
+    test('start and remoteSuthdown', () {
+      var exitCalled = expectAsync(() {});
+
+      // Create an instance of the server launcher.
+      final server = new AppEngineApiServer(
+          path.join(packageRoot().absolute.path, 'test/tmp_data/appengine_api_server'), 'test-app', clearDatastore: true);
+
+      // launch the Gcloud Datastore Local Development Server
+      return server.start().then((success) {
+        expect(success, isTrue);
+
+        server.onExit.first.then((code) {
+          expect(code, equals(-15));
+          exitCalled();
+        });
+
+        return new Future.delayed(new Duration(seconds: 2),
+                () => server.kill())
+            .then((success) => expect(success, isTrue));
+      });
+    });
+  });
 }
 ```

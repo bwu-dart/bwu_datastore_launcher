@@ -8,7 +8,7 @@ import 'package:unittest/vm_config.dart';
 import 'package:bwu_datastore_launcher/bwu_datastore_launcher.dart';
 
 main() async {
-  //useVMConfiguration();
+  useVMConfiguration();
 
   group('launch local dev server', () {
 
@@ -42,7 +42,7 @@ main() async {
               exitCalled();
             });
 
-            return new Future.delayed(new Duration(seconds: 1),
+            return new Future.delayed(new Duration(seconds: 2),
                 // () => server.kill(io.ProcessSignal.SIGTERM))
                 // Darts Process kill doesn't kill child processes, therefore we
                 // use the `remoteShutdown` feature of the server to not keep
