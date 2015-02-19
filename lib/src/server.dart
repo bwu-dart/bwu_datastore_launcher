@@ -10,8 +10,8 @@ abstract class Server {
   /// The path to the Gcloud SDK root directory
   String get exePath => _exePath;
 
-  String _host;
-  String get host => _host;
+  io.InternetAddress _host;
+  io.InternetAddress get host => _host;
 
   int _port;
   int get port => _port;

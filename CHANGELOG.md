@@ -1,7 +1,16 @@
-## 0.2.0
+## 0.2.2
+- move utility function getNextFreeIpPort to the bwu_util_server package.
+- change host field form String to InternetAddress. 
 
-Support for Appengine API Server added  
+## 0.2.1
+- Some refactoring
+
+## 0.2.0
+- Support for Appengine API Server added  
+
+## 0.1.5
+- The same as 0.2.0 I just tried if I can publish an older version when a newer
+already exists.
 
 ##0.1.0
-
-Initial support for Gcloud Datastore Local Development Server
+- Initial support for Gcloud Datastore Local Development Server

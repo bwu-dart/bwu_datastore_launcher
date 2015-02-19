@@ -64,12 +64,17 @@ class DatastoreLocalDevServer extends Server {
 
   /// Launch the local dev server. The [datastoreDirectory] needs to exist (can
   /// be created with [create].
-  Future start({int port: 0, host: InternetAddress.anyIpV4,
+  Future start({int port: 0, host,
       bool isTesting: false, double consistency: consistencyDefault,
       doStoreOnDisk, bool doAutoGenerateIndexes, allowRemoteShutdown}) async {
     assert(port != null);
-    assert(host != null);
     assert(consistency != null && consistency >= 0.0 && consistency <= 1.0);
+
+    if(host == null) {
+      this._host = io.InternetAddress.LOOPBACK_IP_V4;
+    } else {
+      this._host = new io.InternetAddress(host);
+    }
 
     List<String> arguments = <String>['start'];
     if (port == 0) {
@@ -78,8 +83,7 @@ class DatastoreLocalDevServer extends Server {
     _port = port;
     arguments.add('--port=${_port}');
 
-    _host = getHost(host);
-    arguments.add('--host=${getHost(_host)}');
+    arguments.add('--host=${_host.address}');
     if (isTesting) {
       arguments.add('--testing');
     }
@@ -105,12 +109,13 @@ class DatastoreLocalDevServer extends Server {
   @override
   Future<bool> kill(
       [io.ProcessSignal signal = io.ProcessSignal.SIGTERM]) async {
-    return super.kill(signal);
+    //return super.kill(signal);
+    throw 'Use `remoteShutdown()` until http://dartbug.com/3637 is fixed.';
   }
 
   Future<bool> remoteShutdown() {
     return new io.HttpClient()
-        .post(host, port, '/_ah/admin/quit')
+        .post(host.address, port, '/_ah/admin/quit')
         .then((request) =>
             request.close().catchError((e) => false).then((_) => true));
   }
