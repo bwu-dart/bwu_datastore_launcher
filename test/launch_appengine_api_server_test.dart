@@ -7,16 +7,16 @@ import 'package:unittest/vm_config.dart';
 import 'package:bwu_datastore_launcher/bwu_datastore_launcher.dart';
 import 'package:bwu_utils_server/package/package.dart';
 
-main() async {
-  useVMConfiguration();
-
-  group('launch local dev server', () {
+main() {
+  group('launch AppEngine API Server', () {
     test('start and remoteSuthdown', () {
       var exitCalled = expectAsync(() {});
 
       // Create an instance of the server launcher.
-      final server = new AppEngineApiServer(
-          path.join(packageRoot().absolute.path, 'test/tmp_data/appengine_api_server'), 'test-app', clearDatastore: true);
+      final server = new AppEngineApiServer(path.join(
+              packageRoot().absolute.path,
+              'test/tmp_data/appengine_api_server'), 'test-app',
+          clearDatastore: true);
 
       // launch the Gcloud Datastore Local Development Server
       return server.start().then((success) {
@@ -27,11 +27,9 @@ main() async {
           exitCalled();
         });
 
-        return new Future.delayed(new Duration(seconds: 2),
-                () => server.kill())
+        return new Future.delayed(new Duration(seconds: 2), () => server.kill())
             .then((success) => expect(success, isTrue));
       });
     });
   });
 }
-

@@ -11,4 +11,4 @@ dependencies:
   bwu_utils_server: ^0.0.4
 
 dev_dependencies:
-  unittest: any
+  unittest: 0.12.0-alpha.0

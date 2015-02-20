@@ -1,3 +1,7 @@
+## 0.2.3
+- Add minimum delay for remoteShutdown to wait until the server is ready to
+process the shutdown request.
+
 ## 0.2.2
 - move utility function getNextFreeIpPort to the bwu_util_server package.
 - change host field form String to InternetAddress. 

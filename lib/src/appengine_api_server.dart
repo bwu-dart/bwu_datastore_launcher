@@ -39,15 +39,15 @@ class AppEngineApiServer extends Server {
       {String workingDirectory, Map<String, String> environment,
       String cloudSdkRootPath, this.gaeModuleName: 'default',
       this.gaeModuleVersion: 'version', this.gaePartition: 'dev',
-      this.highReplication: true, this.trusted,
-      this.appidentityEmailAddress, this.appidentityPrivateKeyPath,
-      this.applicationRoot, this.applicationHost, int applicationPort,
-      this.blobstorePath, this.autoIdPolicy, this.useSqLite,
-      this.requireIndexes, this.clearDatastore, this.logsPath,
-      this.enableSendmail, this.smtpHost, this.smtpUser, this.showMailBody,
-      this.smtpAllowTls, this.prospectiveSearchPath,
-      this.clearProspectiveSearch, this.enableTaskRunning,
-      this.taskRetrySeconds, this.userLoginUrl, this.userLogoutUrl})
+      this.highReplication: true, this.trusted, this.appidentityEmailAddress,
+      this.appidentityPrivateKeyPath, this.applicationRoot,
+      this.applicationHost, int applicationPort, this.blobstorePath,
+      this.autoIdPolicy, this.useSqLite, this.requireIndexes,
+      this.clearDatastore, this.logsPath, this.enableSendmail, this.smtpHost,
+      this.smtpUser, this.showMailBody, this.smtpAllowTls,
+      this.prospectiveSearchPath, this.clearProspectiveSearch,
+      this.enableTaskRunning, this.taskRetrySeconds, this.userLoginUrl,
+      this.userLogoutUrl})
       : super(datastoreDirectory,
           workingDirectory: workingDirectory, environment: environment) {
     assert(gaeLongAppId != null && gaeLongAppId.isNotEmpty);
@@ -65,7 +65,7 @@ class AppEngineApiServer extends Server {
   Future start({int apiPort: 0, host}) async {
     assert(apiPort != null);
 
-    if(host == null) {
+    if (host == null) {
       this._host = io.InternetAddress.ANY_IP_V4;
     } else {
       this._host = new io.InternetAddress(host);
@@ -73,7 +73,7 @@ class AppEngineApiServer extends Server {
 
     List<String> arguments = <String>[];
     arguments.add('-A ${gaePartition}~${gaeLongAppId}');
-    if(apiPort == 0) {
+    if (apiPort == 0) {
       apiPort = await getNextFreeIpPort();
     }
     _port = apiPort;
@@ -100,11 +100,10 @@ class AppEngineApiServer extends Server {
       arguments.add('--application_host=${applicationHost}');
     }
     if (_applicationPort != null) {
-      if(_applicationPort == 0) {
+      if (_applicationPort == 0) {
         _applicationPort = await getNextFreeIpPort();
       }
-      arguments.add(
-          '--application_port=${_applicationPort}');
+      arguments.add('--application_port=${_applicationPort}');
     }
     if (blobstorePath != null && blobstorePath.isNotEmpty) {
       arguments.add('--blobstore_path=${blobstorePath}');

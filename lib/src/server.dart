@@ -21,19 +21,34 @@ abstract class Server {
   final String datastoreDirectory;
 
   io.Process _process;
+
+  bool get isRunning => _process != null;
+
   int _exitCode;
   int get exitCode => _exitCode;
+
+  // When shutdown is called delay the shutdown until [minUpTimeBeforeShutdown]
+  // passed by.
+  Duration minUpTimeBeforeShutdown;
+
+  DateTime _recentLaunchTime;
+  DateTime get recentLaunchTime => _recentLaunchTime;
 
   /// Notify when the launched command exits.
   StreamController<int> _exitController = new StreamController<int>();
   Stream<int> _exitStream;
   Stream<int> get onExit => _exitStream;
 
-  Server(this.datastoreDirectory, {this.workingDirectory, this.environment}) {
+  Server(this.datastoreDirectory,
+      {this.workingDirectory, this.environment, this.minUpTimeBeforeShutdown}) {
     _exitStream = _exitController.stream.asBroadcastStream();
     if (workingDirectory == null) {
       workingDirectory = io.Directory.current.path;
     }
+  }
+
+  Future<bool> shutdown() {
+    throw '"shutdown" is not implemented';
   }
 
   Future<bool> kill(
@@ -56,6 +71,7 @@ abstract class Server {
           .start(exePath, arguments,
               workingDirectory: workingDirectory, environment: environment)
           .then((process) {
+        _recentLaunchTime = new DateTime.now();
         _process = process;
         _process
           ..stdout.listen(io.stdout.add)

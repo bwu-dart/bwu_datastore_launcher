@@ -8,9 +8,12 @@ class DatastoreLocalDevServer extends Server {
   String get exePath => _exePath;
 
   DatastoreLocalDevServer(String datastoreDirectory, {String exePath,
-      String workingDirectory, Map<String, String> environment})
+      String workingDirectory, Map<String, String> environment,
+      Duration minUpTimeBeforeShutdown})
       : super(datastoreDirectory,
-          workingDirectory: workingDirectory, environment: environment) {
+          workingDirectory: workingDirectory,
+          environment: environment,
+          minUpTimeBeforeShutdown: minUpTimeBeforeShutdown) {
     assert(datastoreDirectory != null);
 
     if (exePath != null) {
@@ -18,6 +21,9 @@ class DatastoreLocalDevServer extends Server {
     } else {
       _exePath = path.join(io.Platform.environment['HOME'],
           'google_cloud_datastore_dev_server/gcd-v1beta2-rev1-2.1.1/gcd.sh');
+    }
+    if (minUpTimeBeforeShutdown == null) {
+      this.minUpTimeBeforeShutdown = new Duration(seconds: 3);
     }
   }
 
@@ -64,13 +70,13 @@ class DatastoreLocalDevServer extends Server {
 
   /// Launch the local dev server. The [datastoreDirectory] needs to exist (can
   /// be created with [create].
-  Future start({int port: 0, host,
-      bool isTesting: false, double consistency: consistencyDefault,
-      doStoreOnDisk, bool doAutoGenerateIndexes, allowRemoteShutdown}) async {
+  Future start({int port: 0, host, bool isTesting: false,
+      double consistency: consistencyDefault, doStoreOnDisk,
+      bool doAutoGenerateIndexes, allowRemoteShutdown}) async {
     assert(port != null);
     assert(consistency != null && consistency >= 0.0 && consistency <= 1.0);
 
-    if(host == null) {
+    if (host == null) {
       this._host = io.InternetAddress.LOOPBACK_IP_V4;
     } else {
       this._host = new io.InternetAddress(host);
@@ -114,9 +120,21 @@ class DatastoreLocalDevServer extends Server {
   }
 
   Future<bool> remoteShutdown() {
-    return new io.HttpClient()
+    final shutdown = () => new io.HttpClient()
         .post(host.address, port, '/_ah/admin/quit')
-        .then((request) =>
-            request.close().catchError((e) => false).then((_) => true));
+        .then((request) => request.close())
+        .then((_) => true)
+        .catchError((e) {
+      print('"RemoteShutdown" failed: ${e}');
+      return false;
+    });
+
+    final upTime = new DateTime.now().difference(recentLaunchTime);
+    if (minUpTimeBeforeShutdown != null && upTime < minUpTimeBeforeShutdown) {
+      print('Delay remote shutdown: ${minUpTimeBeforeShutdown - upTime}');
+      return new Future<bool>.delayed(
+          minUpTimeBeforeShutdown - upTime, () => shutdown());
+    }
+    return shutdown();
   }
 }
