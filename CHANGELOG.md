@@ -1,3 +1,6 @@
+## 0.3.0+1
+- add dependency constraints
+
 ## 0.3.0
 - Use logging instead of print
 - Change shutdown delay to startup delay (the start command returns only after
