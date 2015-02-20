@@ -56,7 +56,7 @@ abstract class Server {
     if (_process == null) {
       return false;
     } else {
-      print('kill ${_process.pid}: ${signal}');
+      _log.finer('kill ${_process.pid}: ${signal}');
       return _process.kill(signal);
     }
   }
@@ -65,8 +65,8 @@ abstract class Server {
     if (_process != null) {
       throw 'Server is already running. Kill it first or create a new AppengineApiServer instance.';
     } else {
-      print('Working directory: ${workingDirectory}');
-      print('Start: ${exePath} ${arguments.join(' ')}');
+      _log.finer('Working directory: ${workingDirectory}');
+      _log.finer('Start: ${exePath} ${arguments.join(' ')}');
       return io.Process
           .start(exePath, arguments,
               workingDirectory: workingDirectory, environment: environment)
@@ -74,12 +74,12 @@ abstract class Server {
         _recentLaunchTime = new DateTime.now();
         _process = process;
         _process
-          ..stdout.listen(io.stdout.add)
-          ..stderr.listen(io.stdout.add)
+          ..stdout.listen((stdOut) => _log.finer(UTF8.decoder.convert(stdOut)))
+          ..stderr.listen((stdErr) => _log.severe(UTF8.decoder.convert(stdErr)))
           ..exitCode.then((exitCode) {
             _process = null;
             _exitCode = exitCode;
-            print('\nexit ${_exitCode}');
+            _log.finer('\nexit ${_exitCode}');
             _exitController.add(exitCode);
           });
         return true;

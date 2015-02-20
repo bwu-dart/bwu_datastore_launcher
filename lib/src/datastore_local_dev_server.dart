@@ -35,7 +35,7 @@ class DatastoreLocalDevServer extends Server {
           : workingDirectory, datastoreDirectory));
       await datastoreDir.exists().then((exists) {
         if (exists) {
-          print('Delete existing: ${datastoreDir.absolute.path}');
+          _log.finer('Delete existing: ${datastoreDir.absolute.path}');
           return datastoreDir.delete(recursive: true);
         }
       });
@@ -51,19 +51,7 @@ class DatastoreLocalDevServer extends Server {
       }
 
       arguments.add(datastoreDirectory);
-
-      print('Working directory: ${workingDirectory}');
-      print('Start: ${exePath} ${arguments.join(' ')}');
-      _process = await io.Process.start(exePath, arguments,
-          workingDirectory: workingDirectory, environment: environment);
-      _process.stdout.listen((stdOut) => io.stdout.add(stdOut));
-      _process.stderr.listen((stdErr) => io.stderr.add(stdErr));
-      _process.exitCode.then((exitCode) {
-        _process = null;
-        _exitCode = exitCode;
-        print('\nexit ${_exitCode}');
-        _exitController.add(exitCode);
-      });
+      return startProcess(arguments);
     }
     return true;
   }
@@ -125,13 +113,13 @@ class DatastoreLocalDevServer extends Server {
         .then((request) => request.close())
         .then((_) => true)
         .catchError((e) {
-      print('"RemoteShutdown" failed: ${e}');
+      _log.severe('"RemoteShutdown" failed: ${e}');
       return false;
     });
 
     final upTime = new DateTime.now().difference(recentLaunchTime);
     if (minUpTimeBeforeShutdown != null && upTime < minUpTimeBeforeShutdown) {
-      print('Delay remote shutdown: ${minUpTimeBeforeShutdown - upTime}');
+      _log.finer('Delay remote shutdown: ${minUpTimeBeforeShutdown - upTime}');
       return new Future<bool>.delayed(
           minUpTimeBeforeShutdown - upTime, () => shutdown());
     }

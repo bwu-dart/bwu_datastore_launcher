@@ -7,7 +7,17 @@ import 'package:unittest/vm_config.dart';
 import 'package:bwu_datastore_launcher/bwu_datastore_launcher.dart';
 import 'package:bwu_utils_server/package/package.dart';
 
+import 'package:logging/logging.dart' show Logger, Level;
+import 'package:quiver_log/log.dart' show BASIC_LOG_FORMATTER, PrintAppender;
+
+final _logger =
+    new Logger('bwu_datastore_launcher.test.launch_app_engine_api_server');
+
 main() {
+  Logger.root.level = Level.FINEST;
+  var appender = new PrintAppender(BASIC_LOG_FORMATTER);
+  appender.attachLogger(Logger.root);
+
   group('launch AppEngine API Server', () {
     test('start and remoteSuthdown', () {
       var exitCalled = expectAsync(() {});
