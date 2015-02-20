@@ -1,3 +1,6 @@
+## 0.2.3+1
+- Fix some mistake with inconsistent version numbers during deployment. 
+
 ## 0.2.3
 - Add minimum delay for remoteShutdown to wait until the server is ready to
 process the shutdown request.
