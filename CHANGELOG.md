@@ -1,3 +1,8 @@
+## 0.3.0
+- Use logging instead of print
+- Change shutdown delay to startup delay (the start command returns only after
+ a delay to ensure the server is ready to process commands).
+
 ## 0.2.3+1
 - Fix some mistake with inconsistent version numbers during deployment. 
 
