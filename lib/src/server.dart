@@ -27,12 +27,12 @@ abstract class Server {
   int _exitCode;
   int get exitCode => _exitCode;
 
-  // When shutdown is called delay the shutdown until [minUpTimeBeforeShutdown]
-  // passed by.
-  Duration minUpTimeBeforeShutdown;
+  // Wait at least [startupDelay] time before [start] returns to ensure the
+  // server is up and ready.
+  Duration startupDelay;
 
-  DateTime _recentLaunchTime;
-  DateTime get recentLaunchTime => _recentLaunchTime;
+  DateTime _startTime;
+  DateTime get startTime => _startTime;
 
   /// Notify when the launched command exits.
   StreamController<int> _exitController = new StreamController<int>();
@@ -40,7 +40,7 @@ abstract class Server {
   Stream<int> get onExit => _exitStream;
 
   Server(this.datastoreDirectory,
-      {this.workingDirectory, this.environment, this.minUpTimeBeforeShutdown}) {
+      {this.workingDirectory, this.environment, this.startupDelay}) {
     _exitStream = _exitController.stream.asBroadcastStream();
     if (workingDirectory == null) {
       workingDirectory = io.Directory.current.path;
@@ -71,7 +71,7 @@ abstract class Server {
           .start(exePath, arguments,
               workingDirectory: workingDirectory, environment: environment)
           .then((process) {
-        _recentLaunchTime = new DateTime.now();
+        _startTime = new DateTime.now();
         _process = process;
         _process
           ..stdout.listen((stdOut) => _log.finer(UTF8.decoder.convert(stdOut)))

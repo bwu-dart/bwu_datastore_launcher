@@ -9,11 +9,11 @@ class DatastoreLocalDevServer extends Server {
 
   DatastoreLocalDevServer(String datastoreDirectory, {String exePath,
       String workingDirectory, Map<String, String> environment,
-      Duration minUpTimeBeforeShutdown})
+      Duration startupDelay})
       : super(datastoreDirectory,
           workingDirectory: workingDirectory,
           environment: environment,
-          minUpTimeBeforeShutdown: minUpTimeBeforeShutdown) {
+          startupDelay: startupDelay) {
     assert(datastoreDirectory != null);
 
     if (exePath != null) {
@@ -22,8 +22,8 @@ class DatastoreLocalDevServer extends Server {
       _exePath = path.join(io.Platform.environment['HOME'],
           'google_cloud_datastore_dev_server/gcd-v1beta2-rev1-2.1.1/gcd.sh');
     }
-    if (minUpTimeBeforeShutdown == null) {
-      this.minUpTimeBeforeShutdown = new Duration(seconds: 3);
+    if (startupDelay == null) {
+      this.startupDelay = new Duration(seconds: 3);
     }
   }
 
@@ -58,7 +58,7 @@ class DatastoreLocalDevServer extends Server {
 
   /// Launch the local dev server. The [datastoreDirectory] needs to exist (can
   /// be created with [create].
-  Future start({int port: 0, host, bool isTesting: false,
+  Future<bool> start({int port: 0, host, bool isTesting: false,
       double consistency: consistencyDefault, doStoreOnDisk,
       bool doAutoGenerateIndexes, allowRemoteShutdown}) async {
     assert(port != null);
@@ -95,7 +95,14 @@ class DatastoreLocalDevServer extends Server {
     }
     arguments.add(datastoreDirectory);
 
-    return startProcess(arguments);
+    return startProcess(arguments).then((success) {
+      final upTime = new DateTime.now().difference(startTime);
+      if (success && startupDelay != null && upTime < startupDelay) {
+        _log.finer('Delay return from start: ${startupDelay - upTime}');
+        return new Future<bool>.delayed(startupDelay - upTime, () => success);
+      }
+      return new Future<bool>.value(success);
+    });
   }
 
   /// Doesn't work as expected because of http://dartbug.com/3637
@@ -108,7 +115,7 @@ class DatastoreLocalDevServer extends Server {
   }
 
   Future<bool> remoteShutdown() {
-    final shutdown = () => new io.HttpClient()
+    return new io.HttpClient()
         .post(host.address, port, '/_ah/admin/quit')
         .then((request) => request.close())
         .then((_) => true)
@@ -116,13 +123,5 @@ class DatastoreLocalDevServer extends Server {
       _log.severe('"RemoteShutdown" failed: ${e}');
       return false;
     });
-
-    final upTime = new DateTime.now().difference(recentLaunchTime);
-    if (minUpTimeBeforeShutdown != null && upTime < minUpTimeBeforeShutdown) {
-      _log.finer('Delay remote shutdown: ${minUpTimeBeforeShutdown - upTime}');
-      return new Future<bool>.delayed(
-          minUpTimeBeforeShutdown - upTime, () => shutdown());
-    }
-    return shutdown();
   }
 }

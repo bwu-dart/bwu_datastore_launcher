@@ -37,8 +37,7 @@ main() {
           exitCalled();
         });
 
-        return new Future.delayed(new Duration(seconds: 2), () => server.kill())
-            .then((success) => expect(success, isTrue));
+        return server.kill().then((success) => expect(success, isTrue));
       });
     });
   });

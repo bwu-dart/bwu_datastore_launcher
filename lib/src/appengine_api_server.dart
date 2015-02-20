@@ -37,7 +37,7 @@ class AppEngineApiServer extends Server {
 
   AppEngineApiServer(String datastoreDirectory, this.gaeLongAppId,
       {String workingDirectory, Map<String, String> environment,
-      String cloudSdkRootPath, this.gaeModuleName: 'default',
+      String cloudSdkRootPath, Duration startupDelay, this.gaeModuleName: 'default',
       this.gaeModuleVersion: 'version', this.gaePartition: 'dev',
       this.highReplication: true, this.trusted, this.appidentityEmailAddress,
       this.appidentityPrivateKeyPath, this.applicationRoot,
@@ -49,7 +49,7 @@ class AppEngineApiServer extends Server {
       this.enableTaskRunning, this.taskRetrySeconds, this.userLoginUrl,
       this.userLogoutUrl})
       : super(datastoreDirectory,
-          workingDirectory: workingDirectory, environment: environment) {
+          workingDirectory: workingDirectory, environment: environment, startupDelay: startupDelay) {
     assert(gaeLongAppId != null && gaeLongAppId.isNotEmpty);
     assert(gaeModuleName != null && gaeModuleName.isNotEmpty);
     assert(gaeModuleVersion != null && gaeModuleVersion.isNotEmpty);
@@ -60,6 +60,9 @@ class AppEngineApiServer extends Server {
     }
     _exePath = path.join(cloudSdkRootPath, exePathFromSdkRootPath);
     _applicationPort = applicationPort;
+    if (startupDelay == null) {
+      this.startupDelay = new Duration(seconds: 2);
+    }
   }
 
   Future start({int apiPort: 0, host}) async {
@@ -161,7 +164,14 @@ class AppEngineApiServer extends Server {
       arguments.add('--user_logout_url=${userLogoutUrl}');
     }
 
-    return startProcess(arguments);
+    return startProcess(arguments).then((success) {
+      final upTime = new DateTime.now().difference(startTime);
+      if (success && startupDelay != null && upTime < startupDelay) {
+        _log.finer('Delay return from start: ${startupDelay - upTime}');
+        return new Future<bool>.delayed(startupDelay - upTime, () => success);
+      }
+      return new Future<bool>.value(success);
+    });
   }
 }
 

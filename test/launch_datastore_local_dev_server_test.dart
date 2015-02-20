@@ -1,5 +1,6 @@
 library bwu_datastore_launcher.test.launch_datastore_local_dev_server;
 
+import 'dart:async' show Future, Stream;
 import 'package:path/path.dart' as path;
 import 'package:unittest/unittest.dart';
 import 'package:bwu_datastore_launcher/bwu_datastore_launcher.dart';
@@ -56,6 +57,7 @@ main() {
     });
 
     test('start and remoteSuthdown without delay should fail', () {
+      // set up
       var exitCalled = expectAsync(() {});
 
       // Create an instance of the server launcher.
@@ -68,7 +70,9 @@ main() {
           environment: <String, String>{
         'JAVA': '/usr/lib/jvm/java-7-openjdk-amd64/bin/java'
       },
-          minUpTimeBeforeShutdown: new Duration(seconds: 0));
+          startupDelay: new Duration(seconds: 0));
+
+      // exercise
 
       // create the datastore directory
       return server.create('test', deleteExisting: true).then((success) {
@@ -79,6 +83,8 @@ main() {
           return server
               .start(allowRemoteShutdown: true, doStoreOnDisk: false)
               .then((success) {
+
+            // verify
             expect(success, isTrue);
 
             server.onExit.first.then((code) {
@@ -86,13 +92,14 @@ main() {
               exitCalled();
             });
 
+            // tear down
             return server
                 .remoteShutdown()
                 .then((success) => expect(success, isFalse))
                 .then((_) {
-              server.minUpTimeBeforeShutdown = new Duration(seconds: 3);
-              return server
-                  .remoteShutdown()
+              final upTime = new DateTime.now().difference(server.startTime);
+              final delay = new Duration(seconds: 3) - upTime;
+              return new Future.delayed(delay, () => server.remoteShutdown())
                   .then((success) => expect(success, isTrue));
             });
           });
