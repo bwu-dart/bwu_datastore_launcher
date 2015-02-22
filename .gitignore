@@ -17,6 +17,6 @@ packages
 
 # Include when developing application packages.
 pubspec.lock
-test/tmp_data/
+test/.tmp_data/
 
 

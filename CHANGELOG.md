@@ -1,3 +1,7 @@
+## 0.3.1
+- lower logging level for server process output, because all output from the 
+server is sent to stderr.
+
 ## 0.3.0+1
 - add dependency constraints
 

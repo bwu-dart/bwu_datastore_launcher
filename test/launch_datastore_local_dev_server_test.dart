@@ -13,7 +13,7 @@ final _logger =
     new Logger('bwu_datastore_launcher.test.launch_datastore_local_dev_server');
 
 main() {
-  Logger.root.level = Level.FINEST;
+  Logger.root.level = Level.INFO;
   var appender = new PrintAppender(BASIC_LOG_FORMATTER);
   appender.attachLogger(Logger.root);
 
@@ -24,7 +24,7 @@ main() {
       // Create an instance of the server launcher.
       final server = new DatastoreLocalDevServer('connect',
           workingDirectory: path.join(
-              packageRoot().absolute.path, 'test/tmp_data'),
+              packageRoot().absolute.path, 'test/.tmp_data'),
           // `gcd` uses the `JAVA` environment variable to find the Java
           // executable. We make it to point to Java 7 because `gcd` has issues
           // with Java 8.
@@ -63,7 +63,7 @@ main() {
       // Create an instance of the server launcher.
       final server = new DatastoreLocalDevServer('connect',
           workingDirectory: path.join(
-              packageRoot().absolute.path, 'test/tmp_data'),
+              packageRoot().absolute.path, 'test/.tmp_data'),
           // `gcd` uses the `JAVA` environment variable to find the Java
           // executable. We make it to point to Java 7 because `gcd` has issues
           // with Java 8.

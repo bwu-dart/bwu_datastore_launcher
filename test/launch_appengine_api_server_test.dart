@@ -14,7 +14,7 @@ final _logger =
     new Logger('bwu_datastore_launcher.test.launch_app_engine_api_server');
 
 main() {
-  Logger.root.level = Level.FINEST;
+  Logger.root.level = Level.INFO;
   var appender = new PrintAppender(BASIC_LOG_FORMATTER);
   appender.attachLogger(Logger.root);
 
@@ -25,7 +25,7 @@ main() {
       // Create an instance of the server launcher.
       final server = new AppEngineApiServer(path.join(
               packageRoot().absolute.path,
-              'test/tmp_data/appengine_api_server'), 'test-app',
+              'test/.tmp_data/appengine_api_server'), 'test-app',
           clearDatastore: true);
 
       // launch the Gcloud Datastore Local Development Server
