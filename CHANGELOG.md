@@ -1,5 +1,5 @@
 ## 0.3.1
-- lower logging level for server process output, because all output from the 
+- lower logging level for server process output, because all output from the
 server is sent to stderr.
 
 ## 0.3.0+1
@@ -11,7 +11,7 @@ server is sent to stderr.
  a delay to ensure the server is ready to process commands).
 
 ## 0.2.3+1
-- Fix some mistake with inconsistent version numbers during deployment. 
+- Fix some mistake with inconsistent version numbers during deployment.
 
 ## 0.2.3
 - Add minimum delay for remoteShutdown to wait until the server is ready to
@@ -19,13 +19,13 @@ process the shutdown request.
 
 ## 0.2.2
 - move utility function getNextFreeIpPort to the bwu_util_server package.
-- change host field form String to InternetAddress. 
+- change host field form String to InternetAddress.
 
 ## 0.2.1
 - Some refactoring
 
 ## 0.2.0
-- Support for Appengine API Server added  
+- Support for Appengine API Server added
 
 ## 0.1.5
 - The same as 0.2.0 I just tried if I can publish an older version when a newer

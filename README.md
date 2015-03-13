@@ -1,14 +1,14 @@
 #BWU Datastore Launcher
 
-Simplify starting and stopping local Google Cloud Datastore Local Development 
+Simplify starting and stopping local Google Cloud Datastore Local Development
 Server(s) or AppEngine API Server(s) from unit tests.
 
-See also: 
+See also:
 
-- https://cloud.google.com/datastore/docs/tools/devserver  
+- https://cloud.google.com/datastore/docs/tools/devserver
 - https://cloud.google.com/datastore/docs/tools/
-- https://cloud.google.com/sdk/gcloud/  
-  
+- https://cloud.google.com/sdk/gcloud/
+
 ## Usage
 
 ### Google Cloud Datastore Local Development Server example

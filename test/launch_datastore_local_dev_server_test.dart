@@ -1,6 +1,6 @@
 library bwu_datastore_launcher.test.launch_datastore_local_dev_server;
 
-import 'dart:async' show Future, Stream;
+import 'dart:async' show Future;
 import 'package:path/path.dart' as path;
 import 'package:unittest/unittest.dart';
 import 'package:bwu_datastore_launcher/bwu_datastore_launcher.dart';

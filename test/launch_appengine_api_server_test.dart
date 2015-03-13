@@ -1,9 +1,7 @@
 library bwu_datastore_launcher.test.launch_app_engine_api_server;
 
-import 'dart:async' show Future;
 import 'package:path/path.dart' as path;
 import 'package:unittest/unittest.dart';
-import 'package:unittest/vm_config.dart';
 import 'package:bwu_datastore_launcher/bwu_datastore_launcher.dart';
 import 'package:bwu_utils_server/package/package.dart';
 
