@@ -1,30 +1,22 @@
 library bwu_datastore_launcher.test.launch_datastore_local_dev_server;
 
-import 'dart:async' show Future;
+import 'package:bwu_utils/testing_server.dart';
+
 import 'package:path/path.dart' as path;
-import 'package:unittest/unittest.dart';
 import 'package:bwu_datastore_launcher/bwu_datastore_launcher.dart';
-import 'package:bwu_utils_server/package/package.dart';
 
-import 'package:logging/logging.dart' show Logger, Level;
-import 'package:quiver_log/log.dart' show BASIC_LOG_FORMATTER, PrintAppender;
-
-final _logger =
+final _log =
     new Logger('bwu_datastore_launcher.test.launch_datastore_local_dev_server');
 
 main() {
-  Logger.root.level = Level.INFO;
-  var appender = new PrintAppender(BASIC_LOG_FORMATTER);
-  appender.attachLogger(Logger.root);
-
   group('launch Datastore Local Dev Server', () {
-    test('start and remoteSuthdown', () {
+    test('start and remoteSuthdown', () => stackTrace(_log, () {
       var exitCalled = expectAsync(() {});
 
       // Create an instance of the server launcher.
       final server = new DatastoreLocalDevServer('connect',
           workingDirectory: path.join(
-              packageRoot().absolute.path, 'test/.tmp_data'),
+              packageRoot.absolute.path, 'test/.tmp_data'),
           // `gcd` uses the `JAVA` environment variable to find the Java
           // executable. We make it to point to Java 7 because `gcd` has issues
           // with Java 8.
@@ -54,16 +46,17 @@ main() {
           });
         });
       });
-    });
+    }));
 
-    test('start and remoteSuthdown without delay should fail', () {
+    test('start and remoteSuthdown without delay should fail', () => stackTrace(
+        _log, () {
       // set up
       var exitCalled = expectAsync(() {});
 
       // Create an instance of the server launcher.
       final server = new DatastoreLocalDevServer('connect',
           workingDirectory: path.join(
-              packageRoot().absolute.path, 'test/.tmp_data'),
+              packageRoot.absolute.path, 'test/.tmp_data'),
           // `gcd` uses the `JAVA` environment variable to find the Java
           // executable. We make it to point to Java 7 because `gcd` has issues
           // with Java 8.
@@ -105,6 +98,6 @@ main() {
           });
         });
       });
-    });
+    }));
   });
 }

@@ -4,7 +4,7 @@ import 'dart:async' show Future, Stream, StreamController;
 import 'dart:io' as io;
 import 'dart:convert' show UTF8;
 import 'package:path/path.dart' as path;
-import 'package:bwu_utils_server/network/network.dart';
+import 'package:bwu_utils/bwu_utils_server.dart';
 import 'package:logging/logging.dart' show Logger, Level;
 
 part 'src/server.dart';

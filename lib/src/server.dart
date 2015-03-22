@@ -76,14 +76,14 @@ abstract class Server {
         _process
           ..stdout.listen((stdOut) => _log.finer(UTF8.decoder.convert(stdOut)))
           ..stderr.listen((stdErr) {
-              final text = UTF8.decoder.convert(stdErr);
-              if(text.startsWith('WARN: ')) {
-                _log.warning(text);
-              } else if(text.startsWith('ERROR: ')) {
-                _log.severe(text);
-              } else {
-                _log.finer(text);
-              }
+            final text = UTF8.decoder.convert(stdErr);
+            if (text.startsWith('WARN: ')) {
+              _log.warning(text);
+            } else if (text.startsWith('ERROR: ')) {
+              _log.severe(text);
+            } else {
+              _log.finer(text);
+            }
           })
           ..exitCode.then((exitCode) {
             _process = null;

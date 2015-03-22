@@ -37,19 +37,21 @@ class AppEngineApiServer extends Server {
 
   AppEngineApiServer(String datastoreDirectory, this.gaeLongAppId,
       {String workingDirectory, Map<String, String> environment,
-      String cloudSdkRootPath, Duration startupDelay, this.gaeModuleName: 'default',
-      this.gaeModuleVersion: 'version', this.gaePartition: 'dev',
-      this.highReplication: true, this.trusted, this.appidentityEmailAddress,
-      this.appidentityPrivateKeyPath, this.applicationRoot,
-      this.applicationHost, int applicationPort, this.blobstorePath,
-      this.autoIdPolicy, this.useSqLite, this.requireIndexes,
-      this.clearDatastore, this.logsPath, this.enableSendmail, this.smtpHost,
-      this.smtpUser, this.showMailBody, this.smtpAllowTls,
-      this.prospectiveSearchPath, this.clearProspectiveSearch,
-      this.enableTaskRunning, this.taskRetrySeconds, this.userLoginUrl,
-      this.userLogoutUrl})
+      String cloudSdkRootPath, Duration startupDelay,
+      this.gaeModuleName: 'default', this.gaeModuleVersion: 'version',
+      this.gaePartition: 'dev', this.highReplication: true, this.trusted,
+      this.appidentityEmailAddress, this.appidentityPrivateKeyPath,
+      this.applicationRoot, this.applicationHost, int applicationPort,
+      this.blobstorePath, this.autoIdPolicy, this.useSqLite,
+      this.requireIndexes, this.clearDatastore, this.logsPath,
+      this.enableSendmail, this.smtpHost, this.smtpUser, this.showMailBody,
+      this.smtpAllowTls, this.prospectiveSearchPath,
+      this.clearProspectiveSearch, this.enableTaskRunning,
+      this.taskRetrySeconds, this.userLoginUrl, this.userLogoutUrl})
       : super(datastoreDirectory,
-          workingDirectory: workingDirectory, environment: environment, startupDelay: startupDelay) {
+          workingDirectory: workingDirectory,
+          environment: environment,
+          startupDelay: startupDelay) {
     assert(gaeLongAppId != null && gaeLongAppId.isNotEmpty);
     assert(gaeModuleName != null && gaeModuleName.isNotEmpty);
     assert(gaeModuleVersion != null && gaeModuleVersion.isNotEmpty);

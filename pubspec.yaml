@@ -1,5 +1,5 @@
 name: bwu_datastore_launcher
-version: 0.3.1
+version: 0.3.2-dev.0
 author: Günter Zöchbauer <guenter@gzoechbauer.com>
 description: Simplify starting and stopping local Cloud Datastore server(s) from unit tests.
 homepage: https://github.com/bwu-dart/bwu_datastore_launcher
@@ -8,10 +8,19 @@ environment:
 
 dependencies:
   path: ^1.3.0
-  bwu_utils_server: ^0.0.4
+  bwu_utils: ^0.1.0-dev.1
   logging: ^0.9.3
   logging_handlers: ^0.8.0
   quiver_log: ^1.0.3
 
 dev_dependencies:
-  unittest: 0.12.0-alpha.0
+  unittest: ^0.12.0-alpha.1
+
+dependency_overrides:
+  analyzer: ^0.24.0
+  dart_style: '>=0.1.7 <0.2.0'
+  linter:
+    git: git@github.com:dart-lang/linter.git
+  matcher: ^0.12.0-alpha.0
+  unittest: ^0.12.0-alpha.1
+
