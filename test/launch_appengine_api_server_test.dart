@@ -15,7 +15,7 @@ main() {
 
       // Create an instance of the server launcher.
       final server = new AppEngineApiServer(path.join(
-              packageRoot.absolute.path, 'test/.tmp_data/appengine_api_server'),
+              packageRoot().absolute.path, 'test/.tmp_data/appengine_api_server'),
           'test-app', clearDatastore: true);
 
       // launch the Gcloud Datastore Local Development Server

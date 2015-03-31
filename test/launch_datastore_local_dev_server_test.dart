@@ -16,7 +16,7 @@ main() {
       // Create an instance of the server launcher.
       final server = new DatastoreLocalDevServer('connect',
           workingDirectory: path.join(
-              packageRoot.absolute.path, 'test/.tmp_data'),
+              packageRoot().absolute.path, 'test/.tmp_data'),
           // `gcd` uses the `JAVA` environment variable to find the Java
           // executable. We make it to point to Java 7 because `gcd` has issues
           // with Java 8.
@@ -56,7 +56,7 @@ main() {
       // Create an instance of the server launcher.
       final server = new DatastoreLocalDevServer('connect',
           workingDirectory: path.join(
-              packageRoot.absolute.path, 'test/.tmp_data'),
+              packageRoot().absolute.path, 'test/.tmp_data'),
           // `gcd` uses the `JAVA` environment variable to find the Java
           // executable. We make it to point to Java 7 because `gcd` has issues
           // with Java 8.

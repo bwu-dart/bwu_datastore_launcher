@@ -14,13 +14,16 @@ dependencies:
   quiver_log: ^1.0.3
 
 dev_dependencies:
-  unittest: ^0.12.0-alpha.1
+  unittest: ^0.12.0-beta.1
+  analyzer: ^0.25.0-dev.3
+  dart_style: '>=0.1.7 <0.2.0'
 
 dependency_overrides:
-  analyzer: ^0.24.0
-  dart_style: '>=0.1.7 <0.2.0'
+  analyzer: ^0.25.0-dev.3
+  bwu_utils:
+    path: ../bwu_utils
   linter:
     git: git@github.com:dart-lang/linter.git
   matcher: ^0.12.0-alpha.0
-  unittest: ^0.12.0-alpha.1
+#  unittest: ^0.12.0-beta.1
 
