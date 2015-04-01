@@ -17,48 +17,26 @@ void main(List<String> args) {
 
 _main(List<String> args) => grind(args);
 
-@Task()
-void init(GrinderContext context) => defaultInit(context);
-
-@Task()
-void clean(GrinderContext context) => defaultClean(context);
-
-/// analyze - Analyzer check excluding tests
-@Task()
-@Depends(init)
-void analyze(GrinderContext context) {
-  analyzerTask(files: [], directories: ['lib', 'tool', 'test']);
+@Task('Analyze all dart files')
+void analyze() {
+  PubApplication tuneup = new PubApplication('tuneup');
+  tuneup.run(['check']);
 }
 
-/// tests - Run all tests
-@Task()
-@Depends(init)
-void test(GrinderContext context) {
-  Tests.runCliTests();
-}
+@Task('Run all tests')
+void test() => Tests.runCliTests();
 
-/// check - thorough pre-publish check
-@Task()
-@Depends(init, checkFormat, lint, test)
-void check(GrinderContext context) {}
+@Task('Run all checks(analyze, checkFromat, lint, test)')
+@Depends(analyze, checkFormat, lint, test)
+void check() {}
 
-/// check-format - check all for formatting issues
-@Task()
-@Depends(init)
-void checkFormat(GrinderContext context) {
-  checkFormatTask(['.']);
-}
+@Task('Check source code formatting')
+void checkFormat() => checkFormatTask(['.']);
 
 /// format-all - fix all formatting issues
-@Task()
-@Depends(init)
-void formatAll(GrinderContext context) {
-  checkFormatTask(['.']);
-}
+@Task('Run dartformat')
+void formatAll() => checkFormatTask(['.']);
 
 /// lint - run linter on all files
-@Task()
-@Depends(init)
-void lint(GrinderContext context) {
-  linterTask('tool/lintcfg.yaml');
-}
+@Task('Run linter')
+void lint() => linterTask('tool/lintcfg.yaml');
