@@ -16,6 +16,18 @@ abstract class Server {
   int _port;
   int get port => _port;
 
+  /// Creates an URL from the host and port arguments.
+  String get url {
+    if (host != null) {
+      if (host.type == io.InternetAddressType.IP_V6) {
+        return 'http://[${_host.address}]:${_port}/';
+      } else {
+        return 'http://${_host.address}:${_port}/';
+      }
+    }
+    return null;
+  }
+
   /// The directory to use for the datastore data.
   /// This is required by gcd even when `--store_to_disk=false`
   final String datastoreDirectory;

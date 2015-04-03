@@ -65,7 +65,7 @@ class DatastoreLocalDevServer extends Server {
     assert(consistency != null && consistency >= 0.0 && consistency <= 1.0);
 
     if (host == null) {
-      this._host = io.InternetAddress.LOOPBACK_IP_V4;
+      this._host = io.InternetAddress.LOOPBACK_IP_V6;
     } else {
       this._host = new io.InternetAddress(host);
     }

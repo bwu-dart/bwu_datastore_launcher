@@ -30,7 +30,7 @@ packages:
   code_transformers:
     description: code_transformers
     source: hosted
-    version: "0.2.7+1"
+    version: "0.2.7+2"
   collection:
     description: collection
     source: hosted
@@ -54,7 +54,7 @@ packages:
   grinder:
     description:
       ref: null
-      resolved-ref: "19506fad46ee6655fb7b0cde86052b2e66130cfa"
+      resolved-ref: a21b81bc5485b2ed2cf6700fc38e0089b9f220f7
       url: "git@github.com:google/grinder.dart.git"
     source: git
     version: "0.7.0-dev.1"
@@ -77,7 +77,7 @@ packages:
   initialize:
     description: initialize
     source: hosted
-    version: "0.6.0+1"
+    version: "0.6.0+2"
   intl:
     description: intl
     source: hosted
@@ -140,7 +140,7 @@ packages:
   shelf:
     description: shelf
     source: hosted
-    version: "0.5.7"
+    version: "0.6.1+1"
   shelf_static:
     description: shelf_static
     source: hosted
@@ -160,7 +160,7 @@ packages:
   source_span:
     description: source_span
     source: hosted
-    version: "1.1.1"
+    version: "1.1.2"
   stack_trace:
     description: stack_trace
     source: hosted
@@ -173,10 +173,14 @@ packages:
     description: template_binding
     source: hosted
     version: "0.14.0+2"
+  test:
+    description: test
+    source: hosted
+    version: "0.12.0-beta.4"
   unittest:
     description: unittest
     source: hosted
-    version: "0.12.0-beta.1"
+    version: "0.12.0-beta.4"
   utf:
     description: utf
     source: hosted
@@ -188,7 +192,7 @@ packages:
   web_components:
     description: web_components
     source: hosted
-    version: "0.11.1+1"
+    version: "0.11.1+2"
   when:
     description: when
     source: hosted

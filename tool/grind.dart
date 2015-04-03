@@ -26,17 +26,15 @@ void analyze() {
 @Task('Run all tests')
 void test() => Tests.runCliTests();
 
-@Task('Run all checks(analyze, checkFromat, lint, test)')
+@Task('Run all checks(analyze, check-fromat, lint, test)')
 @Depends(analyze, checkFormat, lint, test)
 void check() {}
 
 @Task('Check source code formatting')
 void checkFormat() => checkFormatTask(['.']);
 
-/// format-all - fix all formatting issues
-@Task('Run dartformat')
-void formatAll() => checkFormatTask(['.']);
+@Task('Fix source formatting issues')
+void formatAll() => formatAllTask(['.']);
 
-/// lint - run linter on all files
-@Task('Run linter')
+@Task('Run lint checks')
 void lint() => linterTask('tool/lintcfg.yaml');
