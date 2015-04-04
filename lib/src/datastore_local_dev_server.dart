@@ -115,6 +115,9 @@ class DatastoreLocalDevServer extends Server {
   }
 
   Future<bool> remoteShutdown() {
+    if(!this.isRunning) {
+      return new Future.value(false);
+    }
     return new io.HttpClient()
         .post(host.address, port, '/_ah/admin/quit')
         .then((request) => request.close())
