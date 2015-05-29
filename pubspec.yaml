@@ -7,23 +7,21 @@ environment:
   sdk: ">=1.8.0-dev.3.0 <2.0.0"
 
 dependencies:
-  path: ^1.3.0
   bwu_utils: ^0.1.0-dev.1
-  logging: ^0.9.3
+  logging: ^0.11.0
   logging_handlers: ^0.8.0
+  path: ^1.3.0
   quiver_log: ^1.0.3
 
 dev_dependencies:
-  test: ^0.12.0-beta.1
   analyzer: ^0.25.0-dev.3
   dart_style: '>=0.1.7 <0.2.0'
+  bwu_utils_dev:
+    path: ../bwu_utils_dev
+  grinder: '^0.7.1+3'
+  test: ^0.12.0
 
 dependency_overrides:
-  analyzer: ^0.25.0-dev.3
   bwu_utils:
     path: ../bwu_utils
-  linter:
-    git: git@github.com:dart-lang/linter.git
-  matcher: ^0.12.0-alpha.0
-#  unittest: ^0.12.0-beta.1
 

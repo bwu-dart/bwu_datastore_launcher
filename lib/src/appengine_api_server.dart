@@ -79,7 +79,7 @@ class AppEngineApiServer extends Server {
     List<String> arguments = <String>[];
     arguments.add('-A ${gaePartition}~${gaeLongAppId}');
     if (apiPort == 0) {
-      apiPort = await getNextFreeIpPort();
+      apiPort = await getFreeIpPort();
     }
     _port = apiPort;
     arguments.add('--api_port=${_port}');
@@ -106,7 +106,7 @@ class AppEngineApiServer extends Server {
     }
     if (_applicationPort != null) {
       if (_applicationPort == 0) {
-        _applicationPort = await getNextFreeIpPort();
+        _applicationPort = await getFreeIpPort();
       }
       arguments.add('--application_port=${_applicationPort}');
     }

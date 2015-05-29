@@ -72,7 +72,7 @@ class DatastoreLocalDevServer extends Server {
 
     List<String> arguments = <String>['start'];
     if (port == 0) {
-      port = await getNextFreeIpPort();
+      port = await getFreeIpPort();
     }
     _port = port;
     arguments.add('--port=${_port}');

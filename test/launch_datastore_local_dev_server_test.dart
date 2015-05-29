@@ -1,9 +1,10 @@
 library bwu_datastore_launcher.test.launch_datastore_local_dev_server;
 
-import 'package:bwu_utils/testing_server.dart';
+import 'package:bwu_utils_dev/testing_server.dart';
 
 import 'package:path/path.dart' as path;
 import 'package:bwu_datastore_launcher/bwu_datastore_launcher.dart';
+import 'package:bwu_utils/bwu_utils_server.dart' as srv_utils;
 
 final _log =
     new Logger('bwu_datastore_launcher.test.launch_datastore_local_dev_server');
@@ -16,7 +17,7 @@ main() {
       // Create an instance of the server launcher.
       final server = new DatastoreLocalDevServer('connect',
           workingDirectory: path.join(
-              packageRoot().absolute.path, 'test/.tmp_data'),
+              srv_utils.packageRoot().absolute.path, 'test/.tmp_data'),
           // `gcd` uses the `JAVA` environment variable to find the Java
           // executable. We make it to point to Java 7 because `gcd` has issues
           // with Java 8.
@@ -56,7 +57,7 @@ main() {
       // Create an instance of the server launcher.
       final server = new DatastoreLocalDevServer('connect',
           workingDirectory: path.join(
-              packageRoot().absolute.path, 'test/.tmp_data'),
+              srv_utils.packageRoot().absolute.path, 'test/.tmp_data'),
           // `gcd` uses the `JAVA` environment variable to find the Java
           // executable. We make it to point to Java 7 because `gcd` has issues
           // with Java 8.

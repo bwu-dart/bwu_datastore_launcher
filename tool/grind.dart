@@ -3,7 +3,9 @@ library bwu_datastore_launcher.tool.grind;
 import 'package:stack_trace/stack_trace.dart' show Chain;
 import 'package:grinder/grinder.dart';
 
-import 'package:bwu_utils/grinder.dart';
+import 'package:bwu_utils_dev/grinder.dart';
+
+const existingSourceDirs = const ['lib', 'test', 'tool'];
 
 void main(List<String> args) {
   Chain.capture(() => _main(args), onError: (error, stack) {
@@ -18,13 +20,10 @@ void main(List<String> args) {
 _main(List<String> args) => grind(args);
 
 @Task('Analyze all dart files')
-void analyze() {
-  PubApplication tuneup = new PubApplication('tuneup');
-  tuneup.run(['check']);
-}
+analyze() => Pub.global.run('tuneup', arguments: ['check']);
 
 @Task('Run all tests')
-void test() => Tests.runCliTests();
+test() => Pub.run('test');
 
 @Task('Run all checks(analyze, check-fromat, lint, test)')
 @Depends(analyze, checkFormat, lint, test)
@@ -34,7 +33,8 @@ void check() {}
 void checkFormat() => checkFormatTask(['.']);
 
 @Task('Fix source formatting issues')
-void formatAll() => formatAllTask(['.']);
+void formatAll() => DartFmt.format(existingSourceDirs);
 
 @Task('Run lint checks')
-void lint() => linterTask('tool/lintcfg.yaml');
+lint() => new PubApp.global('linter')
+    .run(['--stats', '-ctool/lintcfg.yaml']..addAll(existingSourceDirs));

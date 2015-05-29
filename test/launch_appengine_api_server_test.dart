@@ -1,9 +1,10 @@
 library bwu_datastore_launcher.test.launch_app_engine_api_server;
 
-import 'package:bwu_utils/testing_server.dart';
+import 'package:bwu_utils_dev/testing_server.dart';
 
 import 'package:path/path.dart' as path;
 import 'package:bwu_datastore_launcher/bwu_datastore_launcher.dart';
+import 'package:bwu_utils/bwu_utils_server.dart' as srv_utils;
 
 final _log =
     new Logger('bwu_datastore_launcher.test.launch_app_engine_api_server');
@@ -15,7 +16,7 @@ main() {
 
       // Create an instance of the server launcher.
       final server = new AppEngineApiServer(path.join(
-              packageRoot().absolute.path,
+              srv_utils.packageRoot().absolute.path,
               'test/.tmp_data/appengine_api_server'), 'test-app',
           clearDatastore: true);
 
