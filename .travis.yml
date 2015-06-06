@@ -12,8 +12,8 @@ env:
     - DOCKER_PORT_RANGE=2400:2500
     - 'SLIRP_PORTS="2375 8000 $(seq 49153 49253)"'
   matrix:
-    - PUB=DOWNGRADE
-#    - PUB=UPGRADE
+#    - PUB=DOWNGRADE
+    - PUB=UPGRADE
 #  - GOOGLE_CLOUD_DATASTORE_LOCAL_DEV_SERVER_EXECUTABLE=_install/google_cloud_datastore_dev_server/gcd-v1beta2-rev1-2.1.1/gcd.sh
 
 script: dart -c tool/grind.dart travis
