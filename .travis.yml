@@ -2,7 +2,7 @@ language: dart
 
 dart:
   - stable
-  - dev
+#  - dev
 
 env:
   global:
@@ -13,7 +13,7 @@ env:
 #    - SLIRP_PORTS=$(seq 2375 2500)
   matrix:
     - PUB=DOWNGRADE
-    - PUB=UPGRADE
+#    - PUB=UPGRADE
 #  - GOOGLE_CLOUD_DATASTORE_LOCAL_DEV_SERVER_EXECUTABLE=_install/google_cloud_datastore_dev_server/gcd-v1beta2-rev1-2.1.1/gcd.sh
 
 script: dart -c tool/grind.dart travis
@@ -38,13 +38,18 @@ before_install:
 
 install:
   - sudo apt-get update
-  - sudo apt-get -y install lxc lxc-docker slirp
-  - sudo sudo usermod -aG docker "$USER"
-  - git clone git://github.com/cptactionhank/sekexe
+  - sudo mkdir -pp /var/lib/docker
+  - sudo apt-get -y install lxc lxc-docker slirp aufs-tools cgroup-lite
+  - curl -sLo linux https://github.com/jpetazzo/sekexe/raw/master/uml
+  - chmod +x linux
+#  - sudo sudo usermod -aG docker "$USER"
+#  - git clone git://github.com/cptactionhank/sekexe
 
 before_script:
-  - env
-  - "sekexe/run 'mount -t tmpfs -o size=8g tmpfs /var/lib/docker && docker -d -H tcp://0.0.0.0:2375' &"
+#  - env
+  - ./linux quiet mem=2G rootfstype=hostfs rw eth0=slirp,,/usr/bin/slirp-fullbolt init=$(pwd)/uml.sh WORKDIR=$(pwd) HOME=$HOME; exit `cat $(pwd)/$DIR/exit.status`
+
+#  - "sekexe/run 'mount -t tmpfs -o size=8g tmpfs /var/lib/docker && docker -d -H tcp://0.0.0.0:2375' &"
   #- "while ! docker info &> /dev/null ; do sleep 1; done"
   - "while ! docker info; do sleep 1; done"
   - echo done
