@@ -44,8 +44,8 @@ install:
 #  - chmod +x linux
   - sudo sudo usermod -aG docker "$USER"
 #  - git clone git://github.com/cptactionhank/sekexe
-  - curl -sLo .travis.d/uml https://github.com/jpetazzo/sekexe/raw/master/uml
-  - chmod +x .travis.d/uml
+  - sudo curl -sLo .travis.d/uml https://github.com/jpetazzo/sekexe/raw/master/uml
+  - sudo chmod +x .travis.d/uml
 
 before_script:
 #  - env
