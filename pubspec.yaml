@@ -7,21 +7,18 @@ environment:
   sdk: ">=1.8.0-dev.3.0 <2.0.0"
 
 dependencies:
-  bwu_utils: ^0.1.0-dev.1
+  bwu_utils: ^0.1.0-dev.3
   logging: ^0.11.0
   logging_handlers: ^0.8.0
   path: ^1.3.0
   quiver_log: ^1.0.3
 
 dev_dependencies:
-  analyzer: ^0.25.0-dev.3
+  analyzer: ^0.25.0
   dart_style: '>=0.1.7 <0.2.0'
-  bwu_utils_dev:
-    path: ../bwu_utils_dev
-  grinder: '^0.7.1+3'
+  bwu_utils_dev: ^0.1.0-dev.9
   test: ^0.12.0
+  #unittest: any
 
 dependency_overrides:
-  bwu_utils:
-    path: ../bwu_utils
 

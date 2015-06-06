@@ -1,3 +1,4 @@
+@TestOn('vm')
 library bwu_datastore_launcher.test.launch_app_engine_api_server;
 
 import 'package:bwu_utils_dev/testing_server.dart';

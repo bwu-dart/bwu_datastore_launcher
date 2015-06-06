@@ -1,5 +1,10 @@
 #BWU Datastore Launcher
 
+[![Star this Repo](https://img.shields.io/github/stars/bwu-dart/bwu_datastore_launcher.svg?style=flat)](https://github.com/bwu-dart/bwu_datastore_launcher)
+[![Pub Package](https://img.shields.io/pub/v/bwu_datastore_launcher.svg?style=flat)](https://pub.dartlang.org/packages/bwu_datastore_launcher)
+[![Build Status](https://travis-ci.org/bwu-dart/bwu_datastore_launcher.svg?branch=travis)](https://travis-ci.org/bwu-dart/bwu_datastore_launcher)
+[![Coverage Status](https://coveralls.io/repos/bwu-dart/bwu_datastore_launcher/badge.svg)](https://coveralls.io/r/bwu-dart/bwu_datastore_launcher)
+
 Simplify starting and stopping local Google Cloud Datastore Local Development
 Server(s) or AppEngine API Server(s) from unit tests.
 
