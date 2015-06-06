@@ -39,7 +39,7 @@ before_install:
 install:
   - sudo apt-get update
   - sudo mkdir -pp /var/lib/docker
-  - sudo apt-get -y install lxc lxc-docker slirp aufs-tools cgroup-lite
+  - sudo apt-get -y install lxc lxc-docker slirp
 #  - curl -sLo linux https://github.com/jpetazzo/sekexe/raw/master/uml
 #  - chmod +x linux
   - sudo sudo usermod -aG docker "$USER"
