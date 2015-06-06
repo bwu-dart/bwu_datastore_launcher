@@ -49,7 +49,7 @@ install:
 
 before_script:
 #  - env
-  - ./linux quiet mem=2G rootfstype=hostfs rw eth0=slirp,,/usr/bin/slirp-fullbolt init=$(pwd)/uml.sh WORKDIR=$(pwd) HOME=$HOME; exit `cat $(pwd)/$DIR/exit.status`
+#  - ./linux quiet mem=2G rootfstype=hostfs rw eth0=slirp,,/usr/bin/slirp-fullbolt init=$(pwd)/uml.sh WORKDIR=$(pwd) HOME=$HOME; exit `cat $(pwd)/$DIR/exit.status`
 
 #  - "sekexe/run 'mount -t tmpfs -o size=8g tmpfs /var/lib/docker && docker -d -H tcp://0.0.0.0:2375' &"
   - "sudo .travis.d/run -d docker -d -D -H tcp://0.0.0.0:2375 &"
