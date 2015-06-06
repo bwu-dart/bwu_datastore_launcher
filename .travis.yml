@@ -34,10 +34,10 @@ before_install:
   - sudo sh -c "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"
   - echo exit 101 | sudo tee /usr/sbin/policy-rc.d
   - sudo chmod +x /usr/sbin/policy-rc.d
-
-install:
   - sudo apt-get -qq update
   - sudo apt-get -y install lxc lxc-docker slirp
+
+install:
   - sudo sudo usermod -aG docker "$USER"
   - git clone git://github.com/cptactionhank/sekexe
 
