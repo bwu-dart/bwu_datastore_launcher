@@ -14,7 +14,7 @@ dependencies:
   quiver_log: ^1.0.3
 
 dev_dependencies:
-  analyzer: ^0.25.0
+#  analyzer: ^0.25.0
   dart_style: '>=0.1.7 <0.2.0'
   bwu_utils_dev: ^0.1.0-dev.9
   test: ^0.12.0
