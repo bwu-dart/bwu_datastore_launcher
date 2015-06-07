@@ -40,5 +40,5 @@ install:
   - sudo chown -R $USER $HOME/google_cloud_datastore_dev_server
   - pub upgrade
   - sudo ls -la $HOME/google_cloud_datastore_dev_server
-  - sudo ls -la $HOME/google_cloud_datastore_dev_server/gcd-v1beta2-rev1-2-1-1
+  - sudo ls -la $HOME/google_cloud_datastore_dev_server/gcd-v1beta2-rev1-2.1.1
 
