@@ -5,7 +5,7 @@ dart:
 #  - dev
 
 env:
-  global:
+#  global:
 #    - "HOST_IP=$(/sbin/ifconfig venet0:0 | grep 'inet addr' | awk -F: '{print $2}' | awk '{print $1}')"
 #    - SLIRP_HOST=$HOST_IP
 #    - DOCKER_HOST=tcp://$HOST_IP:2375
@@ -20,7 +20,7 @@ script: dart -c tool/grind.dart travis
 
 # Speed up builds by using containerization. Disable this if you need to use
 # sudo in your scripts.
-sudo: true
+sudo: required
 
 #branches:
 #  only:
@@ -30,7 +30,7 @@ cache:
   directories:
     - $HOME/.pub-cache
 
-#before_install:
+before_install:
 #  - sudo sh -c "wget -qO- https://get.docker.io/gpg | apt-key add -"
 #  - sudo sh -c "echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"
   - echo exit 101 | sudo tee /usr/sbin/policy-rc.d
@@ -54,7 +54,7 @@ install:
 #  - curl -sLo .travis.d/uml https://github.com/jpetazzo/sekexe/raw/master/uml
 #  - chmod +x .travis.d/uml
 
-before_script:
+#before_script:
 #  - echo $DOCKER_HOST
 #  - echo $SLIRP_PORTS
 #  - env
