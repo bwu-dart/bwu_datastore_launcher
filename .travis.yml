@@ -41,7 +41,7 @@ install:
   - sudo apt-get install -y -qq --no-install-recommends openjdk-7-jre-headless
   - wget https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.zip && unzip -d $HOME google-cloud-sdk.zip && rm google-cloud-sdk.zip
   - sudo $HOME/google-cloud-sdk/install.sh --usage-reporting=true --path-update=true --bash-completion=true --rc-path=/.bashrc --disable-installation-options
-  - $HOME/google-cloud-sdk/bin/gcloud --quiet components update pkg-go pkg-python pkg-java preview alpha beta app
+  - sudo $HOME/google-cloud-sdk/bin/gcloud --quiet components update pkg-go pkg-python pkg-java preview alpha beta app
   - $HOME/google-cloud-sdk/bin/gcloud --quiet config set component_manager/disable_update_check true
   - wget http://storage.googleapis.com/gcd/tools/gcd-v1beta2-rev1-2.1.1.zip && unzip -d $HOME/google_cloud_datastore_dev_server gcd-v1beta2-rev1-2.1.1.zip && rm gcd-v1beta2-rev1-2.1.1.zip
   #- mkdir /.ssh
