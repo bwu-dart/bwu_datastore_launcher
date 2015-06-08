@@ -79,6 +79,7 @@ abstract class Server {
     } else {
       _log.finer('Working directory: ${workingDirectory}');
       _log.finer('Start: ${exePath} ${arguments.join(' ')}');
+      _log.finer('Environment: ${environment}');
       return io.Process
           .start(exePath, arguments,
               workingDirectory: workingDirectory, environment: environment)
