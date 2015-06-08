@@ -6,11 +6,16 @@ import 'package:bwu_utils_dev/testing_server.dart';
 import 'package:path/path.dart' as path;
 import 'package:bwu_datastore_launcher/bwu_datastore_launcher.dart';
 import 'package:bwu_utils/bwu_utils_server.dart' as srv_utils;
+import 'package:quiver_log/log.dart';
 
 final _log =
     new Logger('bwu_datastore_launcher.test.launch_app_engine_api_server');
 
 main() {
+  Logger.root.level = Level.FINEST;
+  var appender = new PrintAppender(BASIC_LOG_FORMATTER);
+  appender.attachLogger(Logger.root);
+
   group('launch AppEngine API Server', () {
     test('start and remoteSuthdown', () => stackTrace(_log, () {
       var exitCalled = expectAsync(() {});
