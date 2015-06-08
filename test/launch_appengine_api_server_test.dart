@@ -17,7 +17,7 @@ main() {
   appender.attachLogger(Logger.root);
 
   group('launch AppEngine API Server', () {
-    test('start and remoteSuthdown', () => stackTrace(_log, () {
+    test('start and remoteSuthdown', () {
       var exitCalled = expectAsync(() {});
 
       // Create an instance of the server launcher.
@@ -37,6 +37,6 @@ main() {
 
         return server.kill().then((success) => expect(success, isTrue));
       });
-    }));
+    });
   });
 }

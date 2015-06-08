@@ -2,11 +2,11 @@ language: dart
 
 dart:
   - stable
-#  - dev
+  - dev
 
 env:
   matrix:
-#    - PUB=DOWNGRADE
+    - PUB=DOWNGRADE
     - PUB=UPGRADE
 #  - GOOGLE_CLOUD_DATASTORE_LOCAL_DEV_SERVER_EXECUTABLE=_install/google_cloud_datastore_dev_server/gcd-v1beta2-rev1-2.1.1/gcd.sh
 
@@ -30,9 +30,7 @@ before_install:
 
 install:
   - sudo apt-get update
-  - sudo apt-get install -y -qq --no-install-recommends openjdk-7-jre-headless #mlocate
-#  - sudo updatedb
-#  - locate **/java
+  - sudo apt-get install -y -qq --no-install-recommends openjdk-7-jre-headless
   - wget https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.zip && unzip -d $HOME google-cloud-sdk.zip && rm google-cloud-sdk.zip
   - sudo $HOME/google-cloud-sdk/install.sh --usage-reporting=true --path-update=true --bash-completion=true --rc-path=/.bashrc --disable-installation-options
   - sudo $HOME/google-cloud-sdk/bin/gcloud --quiet components update pkg-go pkg-python pkg-java preview alpha beta app
@@ -40,10 +38,5 @@ install:
   - sudo chown -R $USER $HOME/google-cloud-sdk
   - wget http://storage.googleapis.com/gcd/tools/gcd-v1beta2-rev1-2.1.1.zip && unzip -d $HOME/google_cloud_datastore_dev_server gcd-v1beta2-rev1-2.1.1.zip && rm gcd-v1beta2-rev1-2.1.1.zip
   - sudo chown -R $USER $HOME/google_cloud_datastore_dev_server
-  - ls -la /home/travis/google-cloud-sdk
-  #- /home/travis/google-cloud-sdk/platform/google_appengine/api_server.py -A dev~test-app --api_port=33592 --high_replication --datastore_path=/home/travis/build/bwu-dart/bwu_datastore_launcher/test/.tmp_data/appengine_api_server --clear_datastore
-  #- /home/travis/google_cloud_datastore_dev_server/gcd-v1beta2-rev1-2.1.1/gcd.sh create --dataset_id=test connect
-  - pub upgrade
-#  - ls -la /home/travis/google_cloud_datastore_dev_server/gcd-v1beta2-rev1-2.1.1
-#  - $HOME/google_cloud_datastore_dev_server/gcd-v1beta2-rev1-2.1.1/gcd.sh create -d xxx yyy
+  #- pub upgrade
 

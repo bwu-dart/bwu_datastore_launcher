@@ -17,7 +17,7 @@ main() {
   appender.attachLogger(Logger.root);
 
   group('launch Datastore Local Dev Server', () {
-    test('start and remoteSuthdown', () => stackTrace(_log, () {
+    test('start and remoteSuthdown', () {
       var exitCalled = expectAsync(() {});
 
       // Create an instance of the server launcher.
@@ -53,10 +53,9 @@ main() {
           });
         });
       });
-    }));
+    });
 
-    test('start and remoteSuthdown without delay should fail', () => stackTrace(
-        _log, () {
+    test('start and remoteSuthdown without delay should fail', () {
       // set up
       var exitCalled = expectAsync(() {});
 
@@ -105,6 +104,6 @@ main() {
           });
         });
       });
-    }));
+    });
   });
 }
