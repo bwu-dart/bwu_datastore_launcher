@@ -1,5 +1,7 @@
 build/
+google-cloud-sdk/
 .idea/
+_install/
 packages
 .packages
 .pub/

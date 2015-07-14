@@ -56,7 +56,7 @@ main() {
       });
     });
 
-    test('start and remoteSuthdown without delay should fail', () {
+    test('start and remoteShutdown without delay should fail', () {
       // set up
       var exitCalled = expectAsync(() {});
 
