@@ -1,12 +1,12 @@
 @TestOn('vm')
 library bwu_datastore_launcher.test.launch_app_engine_api_server;
 
-import 'package:bwu_utils_dev/testing_server.dart';
-
 import 'package:path/path.dart' as path;
+import 'package:test/test.dart';
 import 'package:bwu_datastore_launcher/bwu_datastore_launcher.dart';
 import 'package:bwu_utils/bwu_utils_server.dart' as srv_utils;
-import 'package:quiver_log/log.dart';
+import 'package:logging/logging.dart' show Logger, Level;
+import 'package:quiver_log/log.dart' show PrintAppender, BASIC_LOG_FORMATTER;
 
 final _log =
     new Logger('bwu_datastore_launcher.test.launch_app_engine_api_server');
