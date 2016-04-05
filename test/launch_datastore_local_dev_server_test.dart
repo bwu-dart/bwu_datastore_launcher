@@ -12,7 +12,8 @@ import 'package:quiver_log/log.dart' show PrintAppender, BASIC_LOG_FORMATTER;
 final _log =
     new Logger('bwu_datastore_launcher.test.launch_datastore_local_dev_server');
 
-main() {
+///
+void main() {
   Logger.root.level = Level.FINEST;
   var appender = new PrintAppender(BASIC_LOG_FORMATTER);
   appender.attachLogger(Logger.root);
@@ -29,8 +30,8 @@ main() {
           // executable. We make it to point to Java 7 because `gcd` has issues
           // with Java 8.
           environment: <String, String>{
-        'JAVA': '/usr/lib/jvm/java-7-openjdk-amd64/bin/java'
-      });
+            'JAVA': '/usr/lib/jvm/java-7-openjdk-amd64/bin/java'
+          });
 
       // create the datastore directory
       return server.create('test', deleteExisting: true).then((success) {
@@ -68,8 +69,8 @@ main() {
           // executable. We make it to point to Java 7 because `gcd` has issues
           // with Java 8.
           environment: <String, String>{
-        'JAVA': '/usr/lib/jvm/java-7-openjdk-amd64/bin/java'
-      },
+            'JAVA': '/usr/lib/jvm/java-7-openjdk-amd64/bin/java'
+          },
           startupDelay: new Duration(seconds: 0));
 
       // exercise
@@ -83,7 +84,6 @@ main() {
           return server
               .start(allowRemoteShutdown: true, doStoreOnDisk: false)
               .then((success) {
-
             // verify
             expect(success, isTrue);
 

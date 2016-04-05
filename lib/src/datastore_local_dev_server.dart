@@ -1,25 +1,38 @@
-part of bwu_datastore_launcher;
+import 'dart:async' show Future;
+import 'dart:io' as io;
+import 'package:path/path.dart' as path;
+import 'package:bwu_utils/bwu_utils_server.dart' show getFreeIpPort;
+import 'package:logging/logging.dart' show Logger, Level;
+import 'server.dart' show Server;
 
+final _log = new Logger('bwu_datastore_launcher.local_dev_server');
+
+///
+@deprecated
 class DatastoreLocalDevServer extends Server {
-  static const consistencyDefault = 0.9;
+  ///
+  static const double consistencyDefault = 0.9;
 
   /// The path to the local dev server start script
-  String _exePath;
-  String get exePath => _exePath;
+//  @override
+//  String get exePath => super._exePath;
 
-  DatastoreLocalDevServer(String datastoreDirectory, {String exePath,
-      String workingDirectory, Map<String, String> environment,
+  /// Create a new instance of a local dev server.
+  DatastoreLocalDevServer(String datastoreDirectory,
+      {String exePath,
+      String workingDirectory,
+      Map<String, String> environment,
       Duration startupDelay})
       : super(datastoreDirectory,
-          workingDirectory: workingDirectory,
-          environment: environment,
-          startupDelay: startupDelay) {
+            workingDirectory: workingDirectory,
+            environment: environment,
+            startupDelay: startupDelay) {
     assert(datastoreDirectory != null);
 
     if (exePath != null) {
-      _exePath = exePath;
+      this.exePath = exePath;
     } else {
-      _exePath = path.join(io.Platform.environment['HOME'],
+      this.exePath = path.join(io.Platform.environment['HOME'],
           'google_cloud_datastore_dev_server/gcd-v1beta2-rev1-2.1.1/gcd.sh');
     }
     if (startupDelay == null) {
@@ -28,11 +41,11 @@ class DatastoreLocalDevServer extends Server {
   }
 
   /// Initialize the [datastoreDirectory].
-  Future<bool> create(String datasetId, {deleteExisting: false}) async {
+  Future<bool> create(String datasetId, {bool deleteExisting: false}) async {
     if (deleteExisting) {
-      final datastoreDir = new io.Directory(path.join(workingDirectory == null
-          ? ''
-          : workingDirectory, datastoreDirectory));
+      final datastoreDir = new io.Directory(path.join(
+          workingDirectory == null ? '' : workingDirectory,
+          datastoreDirectory));
       await datastoreDir.exists().then((exists) {
         if (exists) {
           _log.finer('Delete existing: ${datastoreDir.absolute.path}');
@@ -41,7 +54,7 @@ class DatastoreLocalDevServer extends Server {
       });
     }
 
-    if (_process != null) {
+    if (process != null) {
       throw 'Server is already running. Kill it first or create a new DatastoreLocalDevServer instance.';
     } else {
       List<String> arguments = <String>['create'];
@@ -58,26 +71,31 @@ class DatastoreLocalDevServer extends Server {
 
   /// Launch the local dev server. The [datastoreDirectory] needs to exist (can
   /// be created with [create].
-  Future<bool> start({int port: 0, host, bool isTesting: false,
-      double consistency: consistencyDefault, doStoreOnDisk,
-      bool doAutoGenerateIndexes, allowRemoteShutdown}) async {
+  Future<bool> start(
+      {int port: 0,
+      dynamic host,
+      bool isTesting: false,
+      double consistency: consistencyDefault,
+      bool doStoreOnDisk,
+      bool doAutoGenerateIndexes,
+      bool allowRemoteShutdown}) async {
     assert(port != null);
     assert(consistency != null && consistency >= 0.0 && consistency <= 1.0);
 
     if (host == null) {
-      this._host = io.InternetAddress.LOOPBACK_IP_V6;
+      this.host = io.InternetAddress.LOOPBACK_IP_V6;
     } else {
-      this._host = new io.InternetAddress(host);
+      this.host = new io.InternetAddress(host);
     }
 
     List<String> arguments = <String>['start'];
     if (port == 0) {
       port = await getFreeIpPort();
     }
-    _port = port;
-    arguments.add('--port=${_port}');
+    this.port = port;
+    arguments.add('--port=${this.port}');
 
-    arguments.add('--host=${_host.address}');
+    arguments.add('--host=${this.host.address}');
     if (isTesting) {
       arguments.add('--testing');
     }
@@ -114,6 +132,7 @@ class DatastoreLocalDevServer extends Server {
     throw 'Use `remoteShutdown()` until http://dartbug.com/3637 is fixed.';
   }
 
+  /// Send a command to the server to shut itself down.
   Future<bool> remoteShutdown() {
     if (!this.isRunning) {
       return new Future.value(false);
@@ -125,6 +144,6 @@ class DatastoreLocalDevServer extends Server {
         .catchError((e) {
       _log.severe('"RemoteShutdown" failed: ${e}');
       return false;
-    });
+    }) as Future<bool>;
   }
 }

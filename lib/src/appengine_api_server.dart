@@ -1,7 +1,17 @@
-part of bwu_datastore_launcher;
+import 'dart:async' show Future;
+import 'dart:io' as io;
+import 'package:path/path.dart' as path;
+import 'package:bwu_utils/bwu_utils_server.dart' show getFreeIpPort;
+import 'package:logging/logging.dart' show Logger, Level;
+import 'server.dart' show Server;
 
+final _log = new Logger('bwu_datastore_launcher.appengine_api_server');
+
+
+/// Wraps the AppEngine API
 class AppEngineApiServer extends Server {
-  static const exePathFromSdkRootPath =
+  /// Server executable path relative from the SDK root.
+  static const String exePathFromSdkRootPath =
       'platform/google_appengine/api_server.py';
 
   final String gaeLongAppId;
@@ -16,6 +26,7 @@ class AppEngineApiServer extends Server {
   final String applicationRoot;
   final String applicationHost;
   int _applicationPort;
+
   int get applicationPort => _applicationPort;
   final String blobstorePath;
   final AutoIdPolicy autoIdPolicy;
@@ -24,7 +35,7 @@ class AppEngineApiServer extends Server {
   final bool clearDatastore;
   final String logsPath;
   final bool enableSendmail;
-  final smtpHost;
+  final dynamic smtpHost;
   final String smtpUser;
   final String showMailBody;
   final bool smtpAllowTls;
@@ -35,23 +46,45 @@ class AppEngineApiServer extends Server {
   final String userLoginUrl;
   final String userLogoutUrl;
 
+  /// Create a new instance with a path to [datastoreDirectory] where to create
+  /// the data files, an application ID [gaeLongAppId] and [workingDirectory]
+  /// if a different than the current one should be used.
   AppEngineApiServer(String datastoreDirectory, this.gaeLongAppId,
-      {String workingDirectory, Map<String, String> environment,
-      String cloudSdkRootPath, Duration startupDelay,
-      this.gaeModuleName: 'default', this.gaeModuleVersion: 'version',
-      this.gaePartition: 'dev', this.highReplication: true, this.trusted,
-      this.appidentityEmailAddress, this.appidentityPrivateKeyPath,
-      this.applicationRoot, this.applicationHost, int applicationPort,
-      this.blobstorePath, this.autoIdPolicy, this.useSqLite,
-      this.requireIndexes, this.clearDatastore, this.logsPath,
-      this.enableSendmail, this.smtpHost, this.smtpUser, this.showMailBody,
-      this.smtpAllowTls, this.prospectiveSearchPath,
-      this.clearProspectiveSearch, this.enableTaskRunning,
-      this.taskRetrySeconds, this.userLoginUrl, this.userLogoutUrl})
+      {String workingDirectory,
+      Map<String, String> environment,
+      String cloudSdkRootPath,
+      Duration startupDelay,
+      this.gaeModuleName: 'default',
+      this.gaeModuleVersion: 'version',
+      this.gaePartition: 'dev',
+      this.highReplication: true,
+      this.trusted,
+      this.appidentityEmailAddress,
+      this.appidentityPrivateKeyPath,
+      this.applicationRoot,
+      this.applicationHost,
+      int applicationPort,
+      this.blobstorePath,
+      this.autoIdPolicy,
+      this.useSqLite,
+      this.requireIndexes,
+      this.clearDatastore,
+      this.logsPath,
+      this.enableSendmail,
+      this.smtpHost,
+      this.smtpUser,
+      this.showMailBody,
+      this.smtpAllowTls,
+      this.prospectiveSearchPath,
+      this.clearProspectiveSearch,
+      this.enableTaskRunning,
+      this.taskRetrySeconds,
+      this.userLoginUrl,
+      this.userLogoutUrl})
       : super(datastoreDirectory,
-          workingDirectory: workingDirectory,
-          environment: environment,
-          startupDelay: startupDelay) {
+            workingDirectory: workingDirectory,
+            environment: environment,
+            startupDelay: startupDelay) {
     assert(gaeLongAppId != null && gaeLongAppId.isNotEmpty);
     assert(gaeModuleName != null && gaeModuleName.isNotEmpty);
     assert(gaeModuleVersion != null && gaeModuleVersion.isNotEmpty);
@@ -60,20 +93,21 @@ class AppEngineApiServer extends Server {
     if (cloudSdkRootPath == null) {
       cloudSdkRootPath = '${io.Platform.environment['HOME']}/google-cloud-sdk/';
     }
-    _exePath = path.join(cloudSdkRootPath, exePathFromSdkRootPath);
+    exePath = path.join(cloudSdkRootPath, exePathFromSdkRootPath);
     _applicationPort = applicationPort;
     if (startupDelay == null) {
       this.startupDelay = new Duration(seconds: 2);
     }
   }
 
-  Future start({int apiPort: 0, host}) async {
+  /// Launch the server instance.
+  Future start({int apiPort: 0, dynamic host}) async {
     assert(apiPort != null);
 
     if (host == null) {
-      this._host = io.InternetAddress.ANY_IP_V4;
+      host = io.InternetAddress.ANY_IP_V4;
     } else {
-      this._host = new io.InternetAddress(host);
+      host = new io.InternetAddress(host);
     }
 
     List<String> arguments = <String>[];
@@ -81,8 +115,8 @@ class AppEngineApiServer extends Server {
     if (apiPort == 0) {
       apiPort = await getFreeIpPort();
     }
-    _port = apiPort;
-    arguments.add('--api_port=${_port}');
+    port = apiPort;
+    arguments.add('--api_port=${port}');
 
     if (highReplication == true) {
       arguments.add('--high_replication');
@@ -177,4 +211,11 @@ class AppEngineApiServer extends Server {
   }
 }
 
-enum AutoIdPolicy { sequential, scattered }
+/// Possible values for auto-ID policy;
+enum AutoIdPolicy {
+  /// use ascending numbers
+  sequential,
+
+  /// TODO(zoechi)
+  scattered
+}
