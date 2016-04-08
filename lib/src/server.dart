@@ -22,21 +22,26 @@ abstract class Server {
 
   /// The path to the `gcloud` executable
   String get exePath => _exePath;
+
   /// Set the path for the `gcloud` executable
   @protected
   set exePath(String value) => this._exePath = value;
 
   io.InternetAddress _host;
+
   /// The network interface the server binds to.
   io.InternetAddress get host => _host;
-  /// Set the network interface for the server to bind to.
-  @protected set host(io.InternetAddress value) => this._host = value;
 
+  /// Set the network interface for the server to bind to.
+  @protected
+  set host(io.InternetAddress value) => this._host = value;
 
   int _port;
+
   /// The network port the server listens to.
   // ignore: unnecessary_getters_setters
   int get port => _port;
+
   /// Set the network port the server should listen to.
   @protected
   // ignore: unnecessary_getters_setters
@@ -59,6 +64,7 @@ abstract class Server {
   final String datastoreDirectory;
 
   io.Process _process;
+
   /// The reference to the running server process.
   @protected
   io.Process get process => _process;
@@ -91,7 +97,10 @@ abstract class Server {
   /// Create a new server instance.
   /// TODO(zoechi) document
   Server(this.datastoreDirectory,
-      {this.workingDirectory, this.environment, this.parameters, this.startupDelay}) {
+      {this.workingDirectory,
+      this.environment,
+      this.parameters,
+      this.startupDelay}) {
     _exitStream = _exitController.stream.asBroadcastStream();
     if (workingDirectory == null) {
       workingDirectory = io.Directory.current.path;

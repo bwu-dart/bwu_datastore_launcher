@@ -7,7 +7,6 @@ import 'server.dart' show Server;
 
 final _log = new Logger('bwu_datastore_launcher.appengine_api_server');
 
-
 /// Wraps the AppEngine API
 class AppEngineApiServer extends Server {
   /// Server executable path relative from the SDK root.
